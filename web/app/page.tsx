@@ -1,9 +1,17 @@
-import { Button } from "@/components/ui/button";
+import Navbar from "@/components/landing/Navbar";
+import Hero from "@/components/landing/Hero";
+import Features from "@/components/landing/Features";
+import Stats from "@/components/landing/Stats";
+import CTA from "@/components/landing/CTA";
 
 export default function Home() {
   return (
-    <main className="flex h-screen items-center justify-center">
-      <Button>InterviewX 🚀</Button>
-    </main>
+    <>
+      <Navbar />
+      <Hero />
+      <Features />
+      <Stats />
+      <CTA />
+    </>
   );
 }
