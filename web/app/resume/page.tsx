@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import type { ResumeType } from "@/types/resume";
+
 import PersonalInfo from "@/components/resume/PersonalInfo";
 import ResumeTypeSelector from "@/components/resume/ResumeTypeSelector";
 
@@ -13,47 +15,63 @@ import Projects from "@/components/resume/it/Projects";
 
 import NonITSkills from "@/components/resume/non-it/Skills";
 
-import type { ResumeType } from "@/types/resume";
 import CertificationSection from "@/components/resume/certifications/CertificationSection";
+import LanguageSection from "@/components/resume/languages/LanguageSection";
+
+import ResumePreview from "@/components/resume/preview/ResumePreview";
 
 export default function ResumePage() {
   const [resumeType, setResumeType] = useState<ResumeType>("it");
 
   return (
     <main className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-        <h1 className="text-4xl font-bold">
-          📄 Resume Builder
-        </h1>
+        {/* ================= Left Side ================= */}
 
-        <p className="text-gray-600">
-          Build your professional resume
-        </p>
+        <div className="space-y-6">
 
-        <ResumeTypeSelector
-          resumeType={resumeType}
-          setResumeType={setResumeType}
-        />
+          <h1 className="text-4xl font-bold">
+            📄 Resume Builder
+          </h1>
 
-        <PersonalInfo />
+          <p className="text-gray-600">
+            Build your professional resume with InterviewX
+          </p>
 
-        <EducationSection />
+          <ResumeTypeSelector
+            resumeType={resumeType}
+            setResumeType={setResumeType}
+          />
 
-        <ExperienceSection />
+          <PersonalInfo />
 
-        {resumeType === "it" ? (
-          <>
-            <Skills />
-            <Projects />
-          </>
-        ) : (
-          <>
-            <NonITSkills />
-          </>
-        )}
+          <EducationSection />
 
-        <CertificationSection />
+          <ExperienceSection />
+
+          {resumeType === "it" ? (
+            <>
+              <Skills />
+              <Projects />
+            </>
+          ) : (
+            <>
+              <NonITSkills />
+            </>
+          )}
+
+          <CertificationSection />
+
+          <LanguageSection />
+
+        </div>
+
+        {/* ================= Right Side ================= */}
+
+        <div className="sticky top-6 h-fit">
+          <ResumePreview />
+        </div>
 
       </div>
     </main>

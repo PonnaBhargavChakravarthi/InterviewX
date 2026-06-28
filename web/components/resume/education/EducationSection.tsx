@@ -1,40 +1,66 @@
 "use client";
 
-import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import EducationCard from "./EducationCard";
 
-export default function EducationSection() {
+import { useResume } from "@/context/ResumeContext";
 
-  const [educations, setEducations] = useState([1]);
+export default function EducationSection() {
+  const { resume, setResume } = useResume();
 
   const addEducation = () => {
-    setEducations([...educations, educations.length + 1]);
+    setResume({
+      ...resume,
+      education: [
+        ...resume.education,
+        {
+          qualification: "",
+          college: "",
+          university: "",
+          branch: "",
+          startYear: "",
+          endYear: "",
+          cgpa: "",
+          status: "",
+        },
+      ],
+    });
   };
-const removeEducation = (index: number) => {
-  setEducations(
-    educations.filter((_, i) => i !== index)
-  );
-};
+
+  const removeEducation = (index: number) => {
+    const updated = resume.education.filter((_, i) => i !== index);
+
+    setResume({
+      ...resume,
+      education: updated,
+    });
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
-
       <h2 className="text-2xl font-bold mb-6">
         🎓 Education
       </h2>
 
       <div className="space-y-6">
-
-        {educations.map((_, index) => (
+        {resume.education.map((education, index) => (
           <EducationCard
-  key={index}
-  index={index}
-  onDelete={() => removeEducation(index)}
-  canDelete={educations.length > 1}
-/>
-        ))}
+            key={index}
+            index={index}
+            education={education}
+            onChange={(updatedEducation) => {
+              const updated = [...resume.education];
+              updated[index] = updatedEducation;
 
+              setResume({
+                ...resume,
+                education: updated,
+              });
+            }}
+            onDelete={() => removeEducation(index)}
+            canDelete={resume.education.length > 1}
+          />
+        ))}
       </div>
 
       <Button
@@ -43,7 +69,6 @@ const removeEducation = (index: number) => {
       >
         ➕ Add Education
       </Button>
-
     </div>
   );
 }

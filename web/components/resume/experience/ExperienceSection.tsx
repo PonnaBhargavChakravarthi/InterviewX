@@ -1,41 +1,64 @@
 "use client";
 
-import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import ExperienceCard from "./ExperienceCard";
+import { useResume } from "@/context/ResumeContext";
 
 export default function ExperienceSection() {
-
-  const [experiences, setExperiences] = useState([1]);
+  const { resume, setResume } = useResume();
 
   const addExperience = () => {
-    setExperiences([...experiences, experiences.length + 1]);
+    setResume({
+      ...resume,
+      experience: [
+        ...resume.experience,
+        {
+          company: "",
+          jobTitle: "",
+          location: "",
+          employmentType: "",
+          startDate: "",
+          endDate: "",
+          description: "",
+        },
+      ],
+    });
   };
 
-  const deleteExperience = (index: number) => {
-    setExperiences(
-      experiences.filter((_, i) => i !== index)
-    );
+  const removeExperience = (index: number) => {
+    const updated = resume.experience.filter((_, i) => i !== index);
+
+    setResume({
+      ...resume,
+      experience: updated,
+    });
   };
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
-
       <h2 className="text-2xl font-bold mb-6">
         💼 Experience
       </h2>
 
       <div className="space-y-6">
-
-        {experiences.map((_, index) => (
+        {resume.experience.map((experience, index) => (
           <ExperienceCard
             key={index}
             index={index}
-            onDelete={() => deleteExperience(index)}
+            experience={experience}
+            onDelete={() => removeExperience(index)}
+            canDelete={resume.experience.length > 1}
+            onChange={(updatedExperience) => {
+              const updated = [...resume.experience];
+              updated[index] = updatedExperience;
+
+              setResume({
+                ...resume,
+                experience: updated,
+              });
+            }}
           />
         ))}
-
       </div>
 
       <Button
@@ -44,7 +67,6 @@ export default function ExperienceSection() {
       >
         ➕ Add Experience
       </Button>
-
     </div>
   );
 }
